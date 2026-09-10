@@ -1,0 +1,3633 @@
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🎮 Arcade de Mini-Jeux</title>
+
+
+<style>
+
+    /* ============================= */
+    /*          STYLE GÉNÉRAL         */
+    /* ============================= */
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+
+    body {
+        background: #f4f6fb;
+        color: #222;
+        min-height: 100vh;
+    }
+
+
+    button {
+        font-family: inherit;
+    }
+
+
+    /* ============================= */
+    /*             MENU               */
+    /* ============================= */
+
+    .menu {
+        position: fixed;
+        left: 0;
+        top: 0;
+
+        width: 250px;
+        height: 100vh;
+
+        background: linear-gradient(
+            180deg,
+            #4f46e5,
+            #3730a3
+        );
+
+        padding: 25px 18px;
+
+        color: white;
+
+        box-shadow: 4px 0 15px rgba(0,0,0,0.15);
+
+        z-index: 1000;
+
+        overflow-y: auto;
+    }
+
+
+    .menu h2 {
+        text-align: center;
+
+        font-size: 25px;
+
+        margin-bottom: 25px;
+    }
+
+
+    .menu button {
+        width: 100%;
+
+        padding: 14px;
+
+        margin-bottom: 9px;
+
+        border: none;
+
+        border-radius: 12px;
+
+        background: rgba(255,255,255,0.95);
+
+        color: #333;
+
+        font-size: 16px;
+
+        cursor: pointer;
+
+        transition: 0.2s;
+    }
+
+
+    .menu button:hover {
+        transform: translateX(4px);
+
+        background: white;
+
+        box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+    }
+
+
+    .menu .fermer {
+        margin-top: 20px;
+
+        background: #ef4444;
+
+        color: white;
+    }
+
+
+    .menu .fermer:hover {
+        background: #dc2626;
+    }
+
+
+    #ouvrir {
+        display: none;
+
+        position: fixed;
+
+        left: 15px;
+        top: 15px;
+
+        z-index: 2000;
+
+        border: none;
+
+        background: #4f46e5;
+
+        color: white;
+
+        border-radius: 12px;
+
+        padding: 12px 16px;
+
+        font-size: 20px;
+
+        cursor: pointer;
+    }
+
+
+    /* ============================= */
+    /*            CONTENU             */
+    /* ============================= */
+
+    .contenu {
+        margin-left: 250px;
+
+        padding: 35px;
+
+        min-height: 100vh;
+    }
+
+
+    .page {
+        display: none;
+
+        animation: apparition 0.3s ease;
+    }
+
+
+    .page.active {
+        display: block;
+    }
+
+
+    @keyframes apparition {
+
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    }
+
+
+    /* ============================= */
+    /*          PAGE ACCUEIL          */
+    /* ============================= */
+
+    .accueil {
+        text-align: center;
+
+        max-width: 1100px;
+
+        margin: auto;
+    }
+
+
+    .accueil h1 {
+        font-size: 48px;
+
+        margin-top: 30px;
+
+        margin-bottom: 15px;
+
+        color: #4f46e5;
+    }
+
+
+    .accueil > p {
+        font-size: 20px;
+
+        color: #666;
+
+        margin-bottom: 35px;
+    }
+
+
+    .stats {
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 20px;
+
+        margin-bottom: 35px;
+    }
+
+
+    .stat {
+        background: white;
+
+        padding: 25px;
+
+        border-radius: 18px;
+
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+
+    .stat .icone {
+        font-size: 35px;
+
+        margin-bottom: 10px;
+    }
+
+
+    .stat h2 {
+        font-size: 35px;
+
+        color: #4f46e5;
+
+        margin-bottom: 5px;
+    }
+
+
+    .stat p {
+        color: #777;
+    }
+
+
+    .bienvenue {
+        background: white;
+
+        padding: 30px;
+
+        border-radius: 20px;
+
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+
+    .bienvenue h2 {
+        margin-bottom: 12px;
+    }
+
+
+    .bienvenue p {
+        color: #666;
+
+        line-height: 1.6;
+    }
+
+
+    /* ============================= */
+    /*            BOITES              */
+    /* ============================= */
+
+    .boite {
+        max-width: 850px;
+
+        margin: auto;
+
+        background: white;
+
+        padding: 35px;
+
+        border-radius: 20px;
+
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+
+        text-align: center;
+    }
+
+
+    .boite h1 {
+        font-size: 32px;
+
+        margin-bottom: 12px;
+    }
+
+
+    .description {
+        color: #777;
+
+        margin-bottom: 20px;
+
+        line-height: 1.5;
+    }
+
+
+    .grosBouton {
+        border: none;
+
+        background: #4f46e5;
+
+        color: white;
+
+        padding: 14px 25px;
+
+        border-radius: 12px;
+
+        font-size: 17px;
+
+        cursor: pointer;
+
+        transition: 0.2s;
+    }
+
+
+    .grosBouton:hover {
+        background: #3730a3;
+
+        transform: translateY(-2px);
+    }
+
+
+    .message {
+        margin-top: 20px;
+
+        font-size: 19px;
+
+        font-weight: bold;
+
+        min-height: 25px;
+    }
+
+
+    /* ============================= */
+    /*          CLIC RAPIDE           */
+    /* ============================= */
+
+    .zoneClic {
+        width: 100%;
+
+        height: 350px;
+
+        margin-top: 25px;
+
+        background: #eef0f7;
+
+        border-radius: 18px;
+
+        position: relative;
+
+        overflow: hidden;
+    }
+
+
+    .cibleClic {
+        width: 55px;
+
+        height: 55px;
+
+        border-radius: 50%;
+
+        background: #ef4444;
+
+        position: absolute;
+
+        cursor: pointer;
+
+        box-shadow: 0 5px 15px rgba(239,68,68,0.35);
+
+        transition: 0.1s;
+    }
+
+
+    .cibleClic:hover {
+        transform: scale(1.1);
+    }
+
+
+    /* ============================= */
+    /*             MÉMOIRE            */
+    /* ============================= */
+
+    .cartes {
+        display: grid;
+
+        grid-template-columns: repeat(4, 1fr);
+
+        gap: 12px;
+
+        max-width: 520px;
+
+        margin: 25px auto;
+    }
+
+
+    .carte {
+        height: 85px;
+
+        border-radius: 14px;
+
+        background: #4f46e5;
+
+        color: white;
+
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+
+        font-size: 32px;
+
+        cursor: pointer;
+
+        transition: 0.2s;
+
+        user-select: none;
+    }
+
+
+    .carte:hover {
+        transform: scale(1.04);
+    }
+
+
+    .carte.retournee,
+    .carte.trouvee {
+        background: white;
+
+        color: #222;
+
+        box-shadow: inset 0 0 0 2px #ddd;
+    }
+
+
+    .carte.trouvee {
+        background: #dcfce7;
+
+        box-shadow: inset 0 0 0 2px #22c55e;
+    }
+
+
+    /* ============================= */
+    /*             CALCUL             */
+    /* ============================= */
+
+    .calcul {
+        font-size: 38px;
+
+        font-weight: bold;
+
+        margin: 25px 0;
+
+        color: #4f46e5;
+    }
+
+
+    #reponseCalcul {
+        width: 180px;
+
+        padding: 13px;
+
+        border: 2px solid #ddd;
+
+        border-radius: 12px;
+
+        font-size: 20px;
+
+        text-align: center;
+
+        outline: none;
+
+        margin-right: 8px;
+    }
+
+
+    #reponseCalcul:focus {
+        border-color: #4f46e5;
+    }
+
+
+    /* ============================= */
+    /*             ORDRE              */
+    /* ============================= */
+
+    .nombres {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+        gap: 12px;
+
+        margin: 25px auto;
+
+        max-width: 600px;
+    }
+
+
+    .nombre {
+        width: 60px;
+
+        height: 60px;
+
+        border: none;
+
+        border-radius: 12px;
+
+        background: #4f46e5;
+
+        color: white;
+
+        font-size: 21px;
+
+        cursor: pointer;
+
+        transition: 0.2s;
+    }
+
+
+    .nombre:hover {
+        background: #3730a3;
+
+        transform: scale(1.05);
+    }
+
+
+    /* ============================= */
+    /*          GÉOGRAPHIE            */
+    /* ============================= */
+
+    .choix {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 12px;
+
+        max-width: 600px;
+
+        margin: 25px auto;
+    }
+
+
+    .choix button {
+        padding: 15px;
+
+        border: none;
+
+        border-radius: 12px;
+
+        background: #eef0f7;
+
+        font-size: 17px;
+
+        cursor: pointer;
+
+        transition: 0.2s;
+    }
+
+
+    .choix button:hover {
+        background: #e0e2eb;
+
+        transform: translateX(3px);
+    }
+
+
+    /* ============================= */
+    /*           RÉFLEXES             */
+    /* ============================= */
+
+    .zoneReflexe {
+        height: 300px;
+
+        border-radius: 20px;
+
+        background: #ddd;
+
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+
+        font-size: 24px;
+
+        font-weight: bold;
+
+        margin-top: 25px;
+
+        cursor: pointer;
+
+        user-select: none;
+
+        transition: 0.15s;
+    }
+
+
+    /* ============================= */
+    /*             LETTRES            */
+    /* ============================= */
+
+    .lettres {
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+
+        flex-wrap: wrap;
+
+        gap: 15px;
+
+        margin-top: 30px;
+
+        min-height: 100px;
+    }
+
+
+    .lettre {
+        width: 75px;
+
+        height: 75px;
+
+        border-radius: 16px;
+
+        background: linear-gradient(
+            135deg,
+            #4f46e5,
+            #6366f1
+        );
+
+        color: white;
+
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+
+        font-size: 38px;
+
+        font-weight: bold;
+
+        box-shadow: 0 6px 15px rgba(79,70,229,0.25);
+    }
+
+
+    .aucuneLettre {
+        color: #888;
+
+        font-size: 18px;
+    }
+
+
+    /* ============================= */
+    /*             CODE               */
+    /* ============================= */
+
+    .codeZone {
+        max-width: 850px;
+
+        margin: auto;
+
+        text-align: center;
+    }
+
+
+    .codeInfo {
+        color: #777;
+
+        margin-bottom: 20px;
+
+        line-height: 1.5;
+    }
+
+
+    .codeCases {
+        display: flex;
+
+        justify-content: center;
+
+        gap: 12px;
+
+        margin: 25px 0;
+
+        flex-wrap: wrap;
+    }
+
+
+    .caseCode {
+        width: 65px;
+
+        height: 65px;
+
+        border: 3px dashed #4f46e5;
+
+        border-radius: 14px;
+
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+
+        font-size: 32px;
+
+        font-weight: bold;
+
+        background: #f8f8ff;
+
+        cursor: pointer;
+
+        transition: 0.2s;
+    }
+
+
+    .caseCode:hover {
+        transform: scale(1.05);
+
+        background: #eeeeff;
+    }
+
+
+    .caseCode.remplie {
+        background: #4f46e5;
+
+        color: white;
+
+        border-style: solid;
+    }
+
+
+    .codeLettres {
+        display: flex;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        gap: 12px;
+
+        margin: 25px 0;
+    }
+
+
+    .codeLettre {
+        width: 65px;
+
+        height: 65px;
+
+        border: none;
+
+        border-radius: 14px;
+
+        background: #f59e0b;
+
+        color: white;
+
+        font-size: 30px;
+
+        font-weight: bold;
+
+        cursor: pointer;
+
+        transition: 0.2s;
+
+        box-shadow: 0 5px 12px rgba(245,158,11,0.25);
+    }
+
+
+    .codeLettre:hover {
+        transform: translateY(-3px);
+    }
+
+
+    .codeLettre.selectionnee {
+        transform: translateY(-5px) scale(1.08);
+
+        box-shadow:
+            0 0 0 4px #4f46e5,
+            0 8px 15px rgba(0,0,0,0.15);
+    }
+
+
+    .codeLettre.utilisee {
+        opacity: 0.35;
+
+        cursor: not-allowed;
+
+        transform: none;
+    }
+
+
+    .codeValide {
+        margin-top: 20px;
+
+        font-size: 21px;
+
+        font-weight: bold;
+
+        min-height: 30px;
+    }
+
+
+    .codeGagne {
+        background: #dcfce7;
+
+        color: #166534;
+
+        padding: 20px;
+
+        border-radius: 15px;
+
+        margin-top: 20px;
+
+        font-size: 22px;
+
+        font-weight: bold;
+    }
+
+
+    /* ============================= */
+    /*          BOUTON RESET           */
+    /* ============================= */
+
+    .reset {
+        border: none;
+
+        background: #fee2e2;
+
+        color: #b91c1c;
+
+        padding: 12px 18px;
+
+        border-radius: 10px;
+
+        cursor: pointer;
+    }
+
+
+    .reset:hover {
+        background: #fecaca;
+    }
+
+
+    /* ============================= */
+    /*          RESPONSIVE             */
+    /* ============================= */
+
+    @media (max-width: 800px) {
+
+        .menu {
+            width: 220px;
+        }
+
+
+        .contenu {
+            margin-left: 220px;
+
+            padding: 20px;
+        }
+
+
+        .stats {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+        .menu {
+            display: none;
+        }
+
+
+        #ouvrir {
+            display: block;
+        }
+
+
+        .contenu {
+            margin-left: 0;
+
+            padding: 20px;
+        }
+
+
+        .accueil h1 {
+            font-size: 35px;
+        }
+
+
+        .boite {
+            padding: 22px;
+        }
+
+
+        .cartes {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+
+        #reponseCalcul {
+            width: 140px;
+
+            margin-bottom: 10px;
+        }
+
+    }
+
+
+
+    /* ============================= */
+    /*          QUIZ SUR MOI         */
+    /* ============================= */
+
+    .quizMoi {
+        max-width: 850px;
+        margin: auto;
+        text-align: center;
+    }
+
+    .quizProgression {
+        color: #777;
+        margin: 15px 0;
+        font-size: 17px;
+    }
+
+    .quizQuestion {
+        font-size: 26px;
+        font-weight: bold;
+        margin: 25px 0;
+        color: #333;
+    }
+
+    .quizChoix {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        max-width: 650px;
+        margin: 25px auto;
+    }
+
+    .quizChoix button {
+        padding: 16px;
+        border: none;
+        border-radius: 12px;
+        background: #eef0f7;
+        font-size: 17px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .quizChoix button:hover {
+        background: #e0e2eb;
+        transform: translateY(-2px);
+    }
+
+    .quizResultat {
+        font-size: 25px;
+        font-weight: bold;
+        color: #4f46e5;
+        margin: 25px 0;
+        line-height: 1.5;
+    }
+
+    @media (max-width: 600px) {
+        .quizChoix {
+            grid-template-columns: 1fr;
+        }
+    }
+
+</style>
+
+```
+
+```
+<!-- ============================= -->
+<!--             MENU               -->
+<!-- ============================= -->
+
+<button id="ouvrir" onclick="ouvrirMenu()">
+    ☰
+</button>
+
+
+<div class="menu" id="menu">
+
+    <h2>🎮 ARCADE</h2>
+
+
+    <button onclick="afficherPage('accueil')">
+        🏠 Accueil
+    </button>
+
+
+    <button onclick="afficherPage('clic')">
+        ⚡ Clic rapide
+    </button>
+
+
+    <button onclick="afficherPage('memoire')">
+        🧠 Mémoire
+    </button>
+
+
+    <button onclick="afficherPage('calcul')">
+        ➗ Calcul
+    </button>
+
+
+    <button onclick="afficherPage('ordre')">
+        🔢 Ordre
+    </button>
+
+
+    <button onclick="afficherPage('geo')">
+        🌍 Géographie
+    </button>
+
+
+    <button onclick="afficherPage('reflexe')">
+        ⚡ Réflexes
+    </button>
+
+
+    <button onclick="afficherPage('lettres')">
+        🔤 Mes lettres
+    </button>
+
+
+    <button onclick="afficherPage('code')">
+        🔐 Code secret
+    </button>
+
+    <button onclick="afficherPage('quizMoi')">
+        🧑 Quiz sur moi
+    </button>
+
+
+
+    <button class="fermer" onclick="fermerMenu()">
+        ✖ Fermer
+    </button>
+
+</div>
+
+
+<!-- ============================= -->
+<!--           CONTENU              -->
+<!-- ============================= -->
+
+<main class="contenu">
+
+
+    <!-- ACCUEIL -->
+
+    <section id="accueil" class="page active">
+
+        <div class="accueil">
+
+            <h1>
+                🎮 ARCADE
+            </h1>
+
+
+            <p>
+                Joue aux mini-jeux, gagne des lettres
+                et découvre le code secret !
+            </p>
+
+
+            <div class="stats">
+
+
+                <div class="stat">
+
+                    <div class="icone">
+                        🏆
+                    </div>
+
+                    <h2 id="score">
+                        0
+                    </h2>
+
+                    <p>
+                        Points
+                    </p>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="icone">
+                        🎯
+                    </div>
+
+                    <h2 id="niveaux">
+                        0
+                    </h2>
+
+                    <p>
+                        Niveaux terminés
+                    </p>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="icone">
+                        🔤
+                    </div>
+
+                    <h2 id="nombreLettres">
+                        0/5
+                    </h2>
+
+                    <p>
+                        Lettres trouvées
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="bienvenue">
+
+                <h2>
+                    🚀 Comment jouer ?
+                </h2>
+
+
+                <p>
+
+                    Termine les mini-jeux pour gagner
+                    des points et des lettres.
+
+                    <br><br>
+
+                    Lorsque tu as récupéré les
+                    <strong>5 lettres</strong>,
+                    va dans <strong>Code secret</strong>.
+
+                    <br><br>
+
+                    Les lettres sont mélangées.
+                    Le mot à trouver est
+                    composé de 5 lettres.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- CLIC RAPIDE -->
+
+    <section id="clic" class="page">
+
+        <div class="boite">
+
+            <h1>
+                ⚡ Clic rapide
+            </h1>
+
+
+            <p class="description">
+                Clique sur le cercle rouge
+                suffisamment de fois !
+            </p>
+
+
+            <p>
+                Clics :
+                <strong id="scoreClic">
+                    0
+                </strong>
+            </p>
+
+
+            <div
+                class="zoneClic"
+                id="zoneClic"
+            >
+
+                <div
+                    class="cibleClic"
+                    id="cibleClic"
+                    onclick="cliquerCible()"
+                ></div>
+
+            </div>
+
+
+            <div
+                class="message"
+                id="messageClic"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- MÉMOIRE -->
+
+    <section id="memoire" class="page">
+
+        <div class="boite">
+
+            <h1>
+                🧠 Mémoire
+            </h1>
+
+
+            <p class="description">
+                Trouve toutes les paires identiques.
+            </p>
+
+
+            <button
+                class="grosBouton"
+                onclick="demarrerMemoire()"
+            >
+                ▶ Commencer
+            </button>
+
+
+            <div
+                class="cartes"
+                id="cartes"
+            ></div>
+
+
+            <div
+                class="message"
+                id="messageMemoire"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- CALCUL -->
+
+    <section id="calcul" class="page">
+
+        <div class="boite">
+
+            <h1>
+                ➗ Calcul
+            </h1>
+
+
+            <p class="description">
+                Réponds correctement aux calculs.
+            </p>
+
+
+            <div
+                class="calcul"
+                id="questionCalcul"
+            >
+                ?
+            </div>
+
+
+            <input
+                type="number"
+                id="reponseCalcul"
+                placeholder="Réponse"
+            >
+
+
+            <button
+                class="grosBouton"
+                onclick="validerCalcul()"
+            >
+                Valider
+            </button>
+
+
+            <div
+                class="message"
+                id="messageCalcul"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ORDRE -->
+
+    <section id="ordre" class="page">
+
+        <div class="boite">
+
+            <h1>
+                🔢 Ordre
+            </h1>
+
+
+            <p class="description">
+                Clique sur les nombres dans l'ordre :
+                1, 2, 3...
+            </p>
+
+
+            <div
+                class="nombres"
+                id="nombres"
+            ></div>
+
+
+            <div
+                class="message"
+                id="messageOrdre"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- GÉOGRAPHIE -->
+
+    <section id="geo" class="page">
+
+        <div class="boite">
+
+            <h1>
+                🌍 Géographie
+            </h1>
+
+
+            <p
+                class="description"
+                id="questionGeo"
+            >
+                Question
+            </p>
+
+
+            <div
+                class="choix"
+                id="choixGeo"
+            ></div>
+
+
+            <div
+                class="message"
+                id="messageGeo"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- RÉFLEXES -->
+
+    <section id="reflexe" class="page">
+
+        <div class="boite">
+
+            <h1>
+                ⚡ Réflexes
+            </h1>
+
+
+            <p class="description">
+                Attends le vert puis clique !
+            </p>
+
+
+            <div
+                class="zoneReflexe"
+                id="zoneReflexe"
+                onclick="cliquerReflexe()"
+            >
+                ⏳ Attends...
+            </div>
+
+
+            <div
+                class="message"
+                id="messageReflexe"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- MES LETTRES -->
+
+    <section id="lettres" class="page">
+
+        <div class="boite">
+
+            <h1>
+                🔤 Mes lettres
+            </h1>
+
+
+            <p class="description">
+                Termine des niveaux pour gagner
+                les 5 lettres du code.
+            </p>
+
+
+            <div
+                class="lettres"
+                id="listeLettres"
+            ></div>
+
+
+            <br>
+
+
+            <button
+                class="grosBouton"
+                onclick="afficherPage('code')"
+            >
+                🔐 Essayer le code
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- CODE SECRET -->
+
+    <section id="code" class="page">
+
+        <div class="boite codeZone">
+
+            <h1>
+                🔐 Code secret
+            </h1>
+
+
+            <p class="codeInfo">
+
+                Les lettres sont mélangées !
+
+                <br><br>
+
+                <strong>1.</strong>
+                Clique sur une lettre.
+
+                <br>
+
+                <strong>2.</strong>
+                Clique sur une case.
+
+                <br>
+
+                <strong>3.</strong>
+                Forme le mot secret.
+
+            </p>
+
+
+            <div
+                class="codeCases"
+                id="codeCases"
+            ></div>
+
+
+            <div
+                class="codeLettres"
+                id="codeLettres"
+            ></div>
+
+
+            <button
+                class="grosBouton"
+                onclick="verifierCode()"
+            >
+                🔓 Vérifier le code
+            </button>
+
+
+            <button
+                class="grosBouton"
+                onclick="effacerCode()"
+                style="margin-left: 8px;"
+            >
+                🗑️ Effacer
+            </button>
+
+
+            <div
+                class="codeValide"
+                id="messageCode"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+
+
+    <!-- QUIZ SUR MOI -->
+
+    <section id="quizMoi" class="page">
+
+        <div class="boite quizMoi">
+
+            <h1>
+                🧑 Quiz sur moi
+            </h1>
+
+            <p class="description">
+                Le code secret est trouvé ! Maintenant, voyons si tu me connais bien.
+            </p>
+
+            <div id="accueilQuizMoi">
+                <button class="grosBouton" onclick="demarrerQuizMoi()">
+                    ▶ Commencer le quiz
+                </button>
+            </div>
+
+            <div id="contenuQuizMoi" style="display:none;">
+                <div class="quizProgression" id="progressionQuizMoi"></div>
+                <div class="quizQuestion" id="questionQuizMoi"></div>
+                <div class="quizChoix" id="choixQuizMoi"></div>
+            </div>
+
+            <div id="finQuizMoi" style="display:none;">
+                <div class="quizResultat" id="resultatQuizMoi"></div>
+                <button class="grosBouton" onclick="demarrerQuizMoi()">
+                    🔄 Recommencer
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RESET -->
+
+    <div style="text-align:center; margin-top:30px;">
+
+        <button
+            class="reset"
+            onclick="resetProgression()"
+        >
+            🗑️ Réinitialiser ma progression
+        </button>
+
+    </div>
+
+
+</main>
+
+
+
+<script>
+
+
+    /* ================================= */
+    /*           CODE SECRET              */
+    /* ================================= */
+
+    const codeSecret = "ELIOT";
+
+
+    /* ================================= */
+    /*           SAUVEGARDE               */
+    /* ================================= */
+
+    let scoreTotal =
+        Number(localStorage.getItem("scoreTotal")) || 0;
+
+
+    let niveauxTotal =
+        Number(localStorage.getItem("niveauxTotal")) || 0;
+
+
+    let lettres =
+        JSON.parse(
+            localStorage.getItem("lettres")
+        ) || [];
+
+
+    let codeTrouve =
+        localStorage.getItem("codeTrouve") === "true";
+
+
+    const ancienCode =
+        localStorage.getItem("codeSecretActuel");
+
+
+    if (ancienCode !== codeSecret) {
+
+        lettres = [];
+
+        codeTrouve = false;
+
+        localStorage.setItem(
+            "codeSecretActuel",
+            codeSecret
+        );
+
+        localStorage.removeItem(
+            "codeTrouve"
+        );
+
+        localStorage.setItem(
+            "lettres",
+            JSON.stringify([])
+        );
+
+    }
+
+
+
+    /* ================================= */
+    /*          SAUVEGARDER               */
+    /* ================================= */
+
+    function sauvegarder() {
+
+        localStorage.setItem(
+            "scoreTotal",
+            scoreTotal
+        );
+
+
+        localStorage.setItem(
+            "niveauxTotal",
+            niveauxTotal
+        );
+
+
+        localStorage.setItem(
+            "lettres",
+            JSON.stringify(lettres)
+        );
+
+
+        localStorage.setItem(
+            "codeTrouve",
+            codeTrouve
+        );
+
+    }
+
+
+
+    /* ================================= */
+    /*          STATS                     */
+    /* ================================= */
+
+    function actualiserStats() {
+
+        document.getElementById(
+            "score"
+        ).textContent =
+            scoreTotal;
+
+
+        document.getElementById(
+            "niveaux"
+        ).textContent =
+            niveauxTotal;
+
+
+        document.getElementById(
+            "nombreLettres"
+        ).textContent =
+            lettres.length + "/5";
+
+
+        afficherLettres();
+
+    }
+
+
+
+    /* ================================= */
+    /*       TERMINER UN NIVEAU           */
+    /* ================================= */
+
+    function terminerNiveau(points = 10) {
+
+        niveauxTotal++;
+
+        scoreTotal += points;
+
+
+        if (
+            lettres.length <
+            codeSecret.length
+        ) {
+
+            const nouvelleLettre =
+                codeSecret[
+                    lettres.length
+                ];
+
+
+            lettres.push(
+                nouvelleLettre
+            );
+
+
+            sauvegarder();
+
+            actualiserStats();
+
+
+            alert(
+                "🏆 NIVEAU TERMINÉ !\n\n" +
+                "Tu as gagné la lettre : " +
+                nouvelleLettre
+            );
+
+        }
+        else {
+
+            sauvegarder();
+
+            actualiserStats();
+
+
+            alert(
+                "🏆 NIVEAU TERMINÉ !\n\n" +
+                "+" + points +
+                " points !"
+            );
+
+        }
+
+    }
+
+
+
+    /* ================================= */
+    /*              MENU                  */
+    /* ================================= */
+
+    function afficherPage(id) {
+
+        document.querySelectorAll(
+            ".page"
+        ).forEach(
+            page => {
+                page.classList.remove(
+                    "active"
+                );
+            }
+        );
+
+
+        const page =
+            document.getElementById(id);
+
+
+        if (page) {
+
+            page.classList.add(
+                "active"
+            );
+
+        }
+
+
+        if (id === "code") {
+
+            afficherCode();
+
+        }
+
+
+        if (id === "lettres") {
+
+            afficherLettres();
+
+        }
+
+
+        fermerMenu();
+
+    }
+
+
+    function fermerMenu() {
+
+        document.getElementById(
+            "menu"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "ouvrir"
+        ).style.display = "block";
+
+    }
+
+
+    function ouvrirMenu() {
+
+        document.getElementById(
+            "menu"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "ouvrir"
+        ).style.display = "none";
+
+    }
+
+
+
+    /* ================================= */
+    /*           CLIC RAPIDE              */
+    /* ================================= */
+
+    let scoreClic = 0;
+
+    let niveauClic = 1;
+
+
+    function placerCible() {
+
+        const cible =
+            document.getElementById(
+                "cibleClic"
+            );
+
+
+        const zone =
+            document.getElementById(
+                "zoneClic"
+            );
+
+
+        const maxX =
+            zone.clientWidth - 55;
+
+
+        const maxY =
+            zone.clientHeight - 55;
+
+
+        cible.style.left =
+            Math.random() *
+            maxX + "px";
+
+
+        cible.style.top =
+            Math.random() *
+            maxY + "px";
+
+    }
+
+
+    function cliquerCible() {
+
+        scoreClic++;
+
+
+        document.getElementById(
+            "scoreClic"
+        ).textContent =
+            scoreClic;
+
+
+        const objectif =
+            5 + niveauClic * 2;
+
+
+        placerCible();
+
+
+        if (
+            scoreClic >= objectif
+        ) {
+
+            terminerNiveau(20);
+
+
+            scoreClic = 0;
+
+            niveauClic++;
+
+
+            document.getElementById(
+                "scoreClic"
+            ).textContent = "0";
+
+
+            document.getElementById(
+                "messageClic"
+            ).textContent =
+                "🎉 Niveau suivant !";
+
+        }
+
+    }
+
+
+    placerCible();
+
+
+
+    /* ================================= */
+    /*              MÉMOIRE                */
+    /* ================================= */
+
+    let premiereCarte = null;
+
+    let deuxiemeCarte = null;
+
+    let bloqueMemoire = false;
+
+    let pairesTrouvees = 0;
+
+
+    const emojis = [
+        "🍎",
+        "🚀",
+        "⚽",
+        "🐶",
+        "🎮",
+        "⭐"
+    ];
+
+
+    function melanger(tableau) {
+
+        const copie = [...tableau];
+
+
+        for (
+            let i = copie.length - 1;
+            i > 0;
+            i--
+        ) {
+
+            const j =
+                Math.floor(
+                    Math.random() *
+                    (i + 1)
+                );
+
+
+            [
+                copie[i],
+                copie[j]
+            ] =
+            [
+                copie[j],
+                copie[i]
+            ];
+
+        }
+
+
+        return copie;
+
+    }
+
+
+    function demarrerMemoire() {
+
+        const valeurs =
+            melanger([
+                ...emojis,
+                ...emojis
+            ]);
+
+
+        premiereCarte = null;
+
+        deuxiemeCarte = null;
+
+        bloqueMemoire = false;
+
+        pairesTrouvees = 0;
+
+
+        const conteneur =
+            document.getElementById(
+                "cartes"
+            );
+
+
+        conteneur.innerHTML = "";
+
+
+        valeurs.forEach(
+            (emoji, index) => {
+
+                const carte =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                carte.className =
+                    "carte";
+
+
+                carte.dataset.valeur =
+                    emoji;
+
+
+                carte.textContent =
+                    "❓";
+
+
+                carte.onclick =
+                    () =>
+                        retournerCarte(
+                            carte
+                        );
+
+
+                conteneur.appendChild(
+                    carte
+                );
+
+            }
+        );
+
+
+        document.getElementById(
+            "messageMemoire"
+        ).textContent = "";
+
+    }
+
+
+    function retournerCarte(carte) {
+
+        if (
+            bloqueMemoire ||
+            carte.classList.contains(
+                "retournee"
+            ) ||
+            carte.classList.contains(
+                "trouvee"
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        carte.classList.add(
+            "retournee"
+        );
+
+
+        carte.textContent =
+            carte.dataset.valeur;
+
+
+        if (!premiereCarte) {
+
+            premiereCarte =
+                carte;
+
+            return;
+
+        }
+
+
+        deuxiemeCarte =
+            carte;
+
+
+        bloqueMemoire = true;
+
+
+        if (
+            premiereCarte.dataset.valeur ===
+            deuxiemeCarte.dataset.valeur
+        ) {
+
+            premiereCarte.classList.add(
+                "trouvee"
+            );
+
+
+            deuxiemeCarte.classList.add(
+                "trouvee"
+            );
+
+
+            pairesTrouvees++;
+
+
+            premiereCarte = null;
+
+            deuxiemeCarte = null;
+
+            bloqueMemoire = false;
+
+
+            if (
+                pairesTrouvees ===
+                emojis.length
+            ) {
+
+                terminerNiveau(30);
+
+                document.getElementById(
+                    "messageMemoire"
+                ).textContent =
+                    "🎉 Toutes les paires sont trouvées !";
+
+            }
+
+        }
+        else {
+
+            setTimeout(
+                () => {
+
+                    premiereCarte
+                        .classList
+                        .remove(
+                            "retournee"
+                        );
+
+
+                    deuxiemeCarte
+                        .classList
+                        .remove(
+                            "retournee"
+                        );
+
+
+                    premiereCarte.textContent =
+                        "❓";
+
+
+                    deuxiemeCarte.textContent =
+                        "❓";
+
+
+                    premiereCarte =
+                        null;
+
+
+                    deuxiemeCarte =
+                        null;
+
+
+                    bloqueMemoire =
+                        false;
+
+                },
+                800
+            );
+
+        }
+
+    }
+
+
+
+    /* ================================= */
+    /*               CALCUL               */
+    /* ================================= */
+
+    let nombre1 = 0;
+
+    let nombre2 = 0;
+
+    let bonneReponse = 0;
+
+    let questionsCalcul = 0;
+
+
+    function nouveauCalcul() {
+
+        nombre1 =
+            Math.floor(
+                Math.random() * 20
+            ) + 1;
+
+
+        nombre2 =
+            Math.floor(
+                Math.random() * 20
+            ) + 1;
+
+
+        bonneReponse =
+            nombre1 + nombre2;
+
+
+        document.getElementById(
+            "questionCalcul"
+        ).textContent =
+            nombre1 +
+            " + " +
+            nombre2 +
+            " = ?";
+
+    }
+
+
+    function validerCalcul() {
+
+        const input =
+            document.getElementById(
+                "reponseCalcul"
+            );
+
+
+        if (input.value === "") {
+            return;
+        }
+
+
+        const reponse =
+            Number(input.value);
+
+
+        if (
+            reponse === bonneReponse
+        ) {
+
+            questionsCalcul++;
+
+        }
+
+
+        input.value = "";
+
+
+        if (
+            questionsCalcul >= 5
+        ) {
+
+            terminerNiveau(25);
+
+            questionsCalcul = 0;
+
+        }
+
+
+        nouveauCalcul();
+
+    }
+
+
+    nouveauCalcul();
+
+
+
+    /* ================================= */
+    /*                ORDRE               */
+    /* ================================= */
+
+    let prochainNombre = 1;
+
+    let niveauOrdre = 1;
+
+
+    function demarrerOrdre() {
+
+        prochainNombre = 1;
+
+
+        const quantite =
+            8 +
+            niveauOrdre * 2;
+
+
+        const nombres = [];
+
+
+        for (
+            let i = 1;
+            i <= quantite;
+            i++
+        ) {
+
+            nombres.push(i);
+
+        }
+
+
+        const melanges =
+            melanger(nombres);
+
+
+        const conteneur =
+            document.getElementById(
+                "nombres"
+            );
+
+
+        conteneur.innerHTML = "";
+
+
+        melanges.forEach(
+            nombre => {
+
+                const bouton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                bouton.className =
+                    "nombre";
+
+
+                bouton.textContent =
+                    nombre;
+
+
+                bouton.onclick =
+                    () =>
+                        cliquerNombre(
+                            bouton,
+                            nombre
+                        );
+
+
+                conteneur.appendChild(
+                    bouton
+                );
+
+            }
+        );
+
+    }
+
+
+    function cliquerNombre(
+        bouton,
+        nombre
+    ) {
+
+        if (
+            nombre !== prochainNombre
+        ) {
+
+            document.getElementById(
+                "messageOrdre"
+            ).textContent =
+                "❌ Mauvais ordre !";
+
+
+            demarrerOrdre();
+
+            return;
+
+        }
+
+
+        bouton.disabled = true;
+
+        bouton.style.opacity =
+            "0.4";
+
+
+        prochainNombre++;
+
+
+        const boutons =
+            document.querySelectorAll(
+                ".nombre"
+            );
+
+
+        if (
+            prochainNombre >
+            boutons.length
+        ) {
+
+            terminerNiveau(25);
+
+
+            niveauOrdre++;
+
+            demarrerOrdre();
+
+        }
+
+    }
+
+
+    demarrerOrdre();
+
+
+
+    /* ================================= */
+    /*             GÉOGRAPHIE              */
+    /* ================================= */
+
+    const questionsGeo = [
+
+        {
+            question:
+                "Quelle est la capitale de la France ?",
+
+            choix: [
+                "Paris",
+                "Madrid",
+                "Rome",
+                "Berlin"
+            ],
+
+            bonne: "Paris"
+        },
+
+
+        {
+            question:
+                "Quel est le plus grand océan ?",
+
+            choix: [
+                "Atlantique",
+                "Pacifique",
+                "Indien",
+                "Arctique"
+            ],
+
+            bonne: "Pacifique"
+        },
+
+
+        {
+            question:
+                "Dans quel pays se trouve Madrid ?",
+
+            choix: [
+                "France",
+                "Italie",
+                "Espagne",
+                "Portugal"
+            ],
+
+            bonne: "Espagne"
+        },
+
+
+        {
+            question:
+                "Quel pays a pour capitale Rome ?",
+
+            choix: [
+                "Italie",
+                "Grèce",
+                "France",
+                "Belgique"
+            ],
+
+            bonne: "Italie"
+        },
+
+
+        {
+            question:
+                "Quel continent contient la France ?",
+
+            choix: [
+                "Afrique",
+                "Europe",
+                "Asie",
+                "Amérique"
+            ],
+
+            bonne: "Europe"
+        }
+
+    ];
+
+
+    let questionGeoActuelle = 0;
+
+    let scoreGeo = 0;
+
+
+    function afficherQuestionGeo() {
+
+        const question =
+            questionsGeo[
+                questionGeoActuelle
+            ];
+
+
+        document.getElementById(
+            "questionGeo"
+        ).textContent =
+            question.question;
+
+
+        const conteneur =
+            document.getElementById(
+                "choixGeo"
+            );
+
+
+        conteneur.innerHTML = "";
+
+
+        question.choix.forEach(
+            choix => {
+
+                const bouton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                bouton.textContent =
+                    choix;
+
+
+                bouton.onclick =
+                    () =>
+                        repondreGeo(
+                            choix
+                        );
+
+
+                conteneur.appendChild(
+                    bouton
+                );
+
+            }
+        );
+
+    }
+
+
+    function repondreGeo(reponse) {
+
+        const question =
+            questionsGeo[
+                questionGeoActuelle
+            ];
+
+
+        if (
+            reponse === question.bonne
+        ) {
+
+            scoreGeo++;
+
+        }
+
+
+        questionGeoActuelle++;
+
+
+        if (
+            questionGeoActuelle >=
+            questionsGeo.length
+        ) {
+
+            if (
+                scoreGeo >= 4
+            ) {
+
+                terminerNiveau(30);
+
+                document.getElementById(
+                    "messageGeo"
+                ).textContent =
+                    "🎉 " +
+                    scoreGeo +
+                    "/5 !";
+
+            }
+            else {
+
+                document.getElementById(
+                    "messageGeo"
+                ).textContent =
+                    "❌ Il faut au moins 4/5.";
+
+            }
+
+
+            questionGeoActuelle = 0;
+
+            scoreGeo = 0;
+
+
+            setTimeout(
+                afficherQuestionGeo,
+                1000
+            );
+
+        }
+        else {
+
+            afficherQuestionGeo();
+
+        }
+
+    }
+
+
+    afficherQuestionGeo();
+
+
+
+    /* ================================= */
+    /*             RÉFLEXES               */
+    /* ================================= */
+
+    let reflexePret = false;
+
+    let debutReflexe = 0;
+
+    let timerReflexe = null;
+
+
+    function demarrerReflexe() {
+
+        const zone =
+            document.getElementById(
+                "zoneReflexe"
+            );
+
+
+        reflexePret = false;
+
+
+        zone.style.background =
+            "#ddd";
+
+
+        zone.textContent =
+            "⏳ Attends...";
+
+
+        clearTimeout(
+            timerReflexe
+        );
+
+
+        const attente =
+            Math.random() *
+            2500 +
+            1500;
+
+
+        timerReflexe =
+            setTimeout(
+                () => {
+
+                    reflexePret = true;
+
+
+                    debutReflexe =
+                        Date.now();
+
+
+                    zone.style.background =
+                        "#22c55e";
+
+
+                    zone.textContent =
+                        "🟢 CLIQUE !";
+
+                },
+                attente
+            );
+
+    }
+
+
+    function cliquerReflexe() {
+
+        const zone =
+            document.getElementById(
+                "zoneReflexe"
+            );
+
+
+        if (!reflexePret) {
+
+            zone.textContent =
+                "❌ Trop tôt !";
+
+
+            setTimeout(
+                demarrerReflexe,
+                800
+            );
+
+
+            return;
+
+        }
+
+
+        const temps =
+            Date.now() -
+            debutReflexe;
+
+
+        reflexePret = false;
+
+
+        if (
+            temps < 1000
+        ) {
+
+            terminerNiveau(30);
+
+
+            document.getElementById(
+                "messageReflexe"
+            ).textContent =
+                "⚡ " +
+                temps +
+                " ms ! Niveau réussi !";
+
+        }
+        else {
+
+            document.getElementById(
+                "messageReflexe"
+            ).textContent =
+                "🐢 " +
+                temps +
+                " ms. Essaie encore !";
+
+        }
+
+
+        zone.style.background =
+            "#ddd";
+
+
+        zone.textContent =
+            "⏳ Nouvelle manche...";
+
+
+        setTimeout(
+            demarrerReflexe,
+            1000
+        );
+
+    }
+
+
+    demarrerReflexe();
+
+
+
+    /* ================================= */
+    /*             LETTRES                */
+    /* ================================= */
+
+    function afficherLettres() {
+
+        const conteneur =
+            document.getElementById(
+                "listeLettres"
+            );
+
+
+        conteneur.innerHTML = "";
+
+
+        if (
+            lettres.length === 0
+        ) {
+
+            conteneur.innerHTML =
+                '<div class="aucuneLettre">' +
+                'Tu n’as encore gagné aucune lettre.' +
+                '</div>';
+
+            return;
+
+        }
+
+
+        lettres.forEach(
+            lettre => {
+
+                const element =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                element.className =
+                    "lettre";
+
+
+                element.textContent =
+                    lettre;
+
+
+                conteneur.appendChild(
+                    element
+                );
+
+            }
+        );
+
+    }
+
+
+
+    /* ================================= */
+    /*          CODE SECRET               */
+    /* ================================= */
+
+    let lettresCode = [];
+
+    let selectionCode = null;
+
+    let ordreCode = [];
+
+
+    function afficherCode() {
+
+        selectionCode = null;
+
+        ordreCode = [];
+
+
+        const cases =
+            document.getElementById(
+                "codeCases"
+            );
+
+
+        const lettresContainer =
+            document.getElementById(
+                "codeLettres"
+            );
+
+
+        cases.innerHTML = "";
+
+        lettresContainer.innerHTML = "";
+
+
+        /*
+            On mélange les lettres gagnées.
+        */
+
+        lettresCode =
+            melanger(lettres);
+
+
+        /*
+            Création des 5 cases.
+        */
+
+        for (
+            let i = 0;
+            i < codeSecret.length;
+            i++
+        ) {
+
+            const caseCode =
+                document.createElement(
+                    "div"
+                );
+
+
+            caseCode.className =
+                "caseCode";
+
+
+            caseCode.dataset.index =
+                i;
+
+
+            /*
+                CORRECTION IMPORTANTE :
+                si une lettre est sélectionnée,
+                elle est placée dans la case.
+                Sinon, si la case contient une
+                lettre, on la retire.
+            */
+
+            caseCode.onclick =
+                () => {
+
+                    if (
+                        selectionCode !== null
+                    ) {
+
+                        remplirCase(i);
+
+                    }
+                    else {
+
+                        retirerLettreCase(i);
+
+                    }
+
+                };
+
+
+            cases.appendChild(
+                caseCode
+            );
+
+        }
+
+
+        /*
+            Création des lettres mélangées.
+        */
+
+        lettresCode.forEach(
+            (lettre, index) => {
+
+                const bouton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                bouton.className =
+                    "codeLettre";
+
+
+                bouton.textContent =
+                    lettre;
+
+
+                bouton.dataset.index =
+                    index;
+
+
+                bouton.onclick =
+                    () =>
+                        selectionnerLettre(
+                            index
+                        );
+
+
+                lettresContainer.appendChild(
+                    bouton
+                );
+
+            }
+        );
+
+
+        if (
+            codeTrouve
+        ) {
+
+            document.getElementById(
+                "messageCode"
+            ).innerHTML =
+                '<div class="codeGagne">' +
+                '🏆 CODE DÉJÀ TROUVÉ !<br><br>' +
+                'Le mot était : ELIOT' +
+                '</div>';
+
+        }
+        else {
+
+            document.getElementById(
+                "messageCode"
+            ).textContent = "";
+
+        }
+
+    }
+
+
+
+    /* ================================= */
+    /*       SÉLECTION D'UNE LETTRE       */
+    /* ================================= */
+
+    function selectionnerLettre(index) {
+
+        const boutons =
+            document.querySelectorAll(
+                ".codeLettre"
+            );
+
+
+        /*
+            Si la lettre est déjà utilisée,
+            on ne peut pas la sélectionner.
+        */
+
+        if (
+            boutons[index].classList.contains(
+                "utilisee"
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        boutons.forEach(
+            bouton =>
+                bouton.classList.remove(
+                    "selectionnee"
+                )
+        );
+
+
+        boutons[index]
+            .classList.add(
+                "selectionnee"
+            );
+
+
+        selectionCode = index;
+
+
+        document.getElementById(
+            "messageCode"
+        ).textContent =
+            "👇 Maintenant clique sur une case.";
+
+    }
+
+
+
+    /* ================================= */
+    /*        METTRE LETTRE EN CASE       */
+    /* ================================= */
+
+    function remplirCase(indexCase) {
+
+        if (
+            selectionCode === null
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+            Vérifie que la case est vide.
+        */
+
+        if (
+            ordreCode[indexCase]
+        ) {
+
+            return;
+
+        }
+
+
+        const lettre =
+            lettresCode[
+                selectionCode
+            ];
+
+
+        if (!lettre) {
+
+            return;
+
+        }
+
+
+        /*
+            Place la lettre.
+        */
+
+        ordreCode[indexCase] =
+            lettre;
+
+
+        const cases =
+            document.querySelectorAll(
+                ".caseCode"
+            );
+
+
+        cases[indexCase].textContent =
+            lettre;
+
+
+        cases[indexCase]
+            .classList.add(
+                "remplie"
+            );
+
+
+        /*
+            Rend le bouton de lettre
+            moins visible.
+        */
+
+        const boutons =
+            document.querySelectorAll(
+                ".codeLettre"
+            );
+
+
+        boutons[selectionCode]
+            .classList.add(
+                "utilisee"
+            );
+
+
+        boutons[selectionCode]
+            .classList.remove(
+                "selectionnee"
+            );
+
+
+        selectionCode = null;
+
+
+        document.getElementById(
+            "messageCode"
+        ).textContent = "";
+
+    }
+
+
+
+    /* ================================= */
+    /*        RETIRER UNE LETTRE          */
+    /* ================================= */
+
+    function retirerLettreCase(indexCase) {
+
+        if (
+            !ordreCode[indexCase]
+        ) {
+
+            return;
+
+        }
+
+
+        const lettre =
+            ordreCode[indexCase];
+
+
+        const indexLettre =
+            lettresCode.indexOf(
+                lettre
+            );
+
+
+        ordreCode[indexCase] =
+            null;
+
+
+        const cases =
+            document.querySelectorAll(
+                ".caseCode"
+            );
+
+
+        cases[indexCase].textContent =
+            "";
+
+
+        cases[indexCase]
+            .classList.remove(
+                "remplie"
+            );
+
+
+        if (
+            indexLettre !== -1
+        ) {
+
+            const boutons =
+                document.querySelectorAll(
+                    ".codeLettre"
+                );
+
+
+            boutons[indexLettre]
+                .classList.remove(
+                    "utilisee"
+                );
+
+        }
+
+    }
+
+
+
+    /* ================================= */
+    /*        VÉRIFIER LE CODE            */
+    /* ================================= */
+
+    function verifierCode() {
+
+        if (
+            lettres.length <
+            codeSecret.length
+        ) {
+
+            document.getElementById(
+                "messageCode"
+            ).textContent =
+                "🔒 Tu dois d'abord gagner les 5 lettres !";
+
+            return;
+
+        }
+
+
+        for (
+            let i = 0;
+            i < codeSecret.length;
+            i++
+        ) {
+
+            if (
+                !ordreCode[i]
+            ) {
+
+                document.getElementById(
+                    "messageCode"
+                ).textContent =
+                    "❌ Remplis toutes les cases !";
+
+                return;
+
+            }
+
+        }
+
+
+        const mot =
+            ordreCode.join("");
+
+
+        if (
+            mot === codeSecret
+        ) {
+
+            if (!codeTrouve) {
+
+                codeTrouve = true;
+
+                scoreTotal += 100;
+
+                sauvegarder();
+
+                actualiserStats();
+
+            }
+
+
+            document.getElementById(
+                "messageCode"
+            ).innerHTML =
+                '<div class="codeGagne">' +
+                '🎉 BRAVO ! 🎉<br><br>' +
+                'Tu as trouvé le code : ELIOT<br><br>' +
+                '+100 points !' +
+                '</div>';
+
+        }
+        else {
+
+            document.getElementById(
+                "messageCode"
+            ).textContent =
+                "❌ Mauvais code ! Essaie encore.";
+
+        }
+
+    }
+
+
+
+    /* ================================= */
+    /*           EFFACER CODE             */
+    /* ================================= */
+
+    function effacerCode() {
+
+        ordreCode = [];
+
+        selectionCode = null;
+
+
+        document.querySelectorAll(
+            ".caseCode"
+        ).forEach(
+            caseCode => {
+
+                caseCode.textContent = "";
+
+                caseCode.classList.remove(
+                    "remplie"
+                );
+
+            }
+        );
+
+
+        document.querySelectorAll(
+            ".codeLettre"
+        ).forEach(
+            bouton => {
+
+                bouton.classList.remove(
+                    "utilisee"
+                );
+
+                bouton.classList.remove(
+                    "selectionnee"
+                );
+
+            }
+        );
+
+
+        document.getElementById(
+            "messageCode"
+        ).textContent = "";
+
+    }
+
+
+
+
+
+    /* ================================= */
+    /*           QUIZ SUR MOI             */
+    /* ================================= */
+
+    const questionsMoi = [
+
+        {
+            question: "Quel est le nom de mon chien ?",
+            choix: ["aramis", "Elias de la surgère", "Éliot", "guismo"],
+            bonne: 2
+        },
+
+        {
+            question: "Combien ai-je de frères et sœurs ?",
+            choix: ["1", "2", "3", "4"],
+            bonne: 1
+        },
+
+        {
+            question: "Quelle est ma passion ?",
+            choix: ["Le développement", "Les échec", "Les maths", "Le gaming"],
+            bonne: 0
+        },
+
+        {
+            question: "Quel est mon pseudo sur mes jeux ?",
+            choix: ["titou99", "titou19", "son_goku19900", "son_goku19985"],
+            bonne: 2
+        },
+
+        {
+            question: "Quel est mon surnom dans la vraie vie ?",
+            choix: ["titou adoré", "Titou casse tout", "titou", "Petit Titou"],
+            bonne: 1
+        },
+
+        {
+            question: "Combien d'opérations ai-je eues ?",
+            choix: ["5", "7", "9", "12"],
+            bonne: 2
+        },
+
+        {
+            question: "Quels sont mes potes garçons ?",
+            choix: [ "mathis M et Tom", "Nolan et Hugo", "Hugo et Nathan","Mathis Dos et Théo"],
+            bonne: 3
+        },
+
+        {
+            question: "Quel est le mot du code secret ?",
+            choix: ["ELI0T", "ÈLIOT", "ELIOT", "eliot"],
+            bonne: 2
+        },
+
+        {
+            question: "Quel numéro fictif est utilisé dans ce quiz ?",
+            choix: ["06 31 40 14 89", "07 40 31 89 14", "06 89 14 40 31", "07 14 89 40 31"],
+            bonne: 0
+        },
+
+        {
+            question: "Quelle date fictive est utilisée dans ce quiz ?",
+            choix: [" 22 juillet 2012", "24 aout 2013", "22 aout 2012", "22 aout 2O12"],
+            bonne: 2
+        }
+
+    ];
+
+    let questionMoiActuelle = 0;
+    let scoreMoi = 0;
+
+    function demarrerQuizMoi() {
+
+        if (!codeTrouve) {
+            alert("🔒 Tu dois d'abord trouver le code secret !");
+            return;
+        }
+
+        questionMoiActuelle = 0;
+        scoreMoi = 0;
+
+        document.getElementById("accueilQuizMoi").style.display = "none";
+        document.getElementById("finQuizMoi").style.display = "none";
+        document.getElementById("contenuQuizMoi").style.display = "block";
+
+        afficherQuestionMoi();
+    }
+
+    function afficherQuestionMoi() {
+
+        const question = questionsMoi[questionMoiActuelle];
+
+        document.getElementById("progressionQuizMoi").textContent =
+            "Question " + (questionMoiActuelle + 1) + " / " + questionsMoi.length;
+
+        document.getElementById("questionQuizMoi").textContent =
+            question.question;
+
+        const conteneur = document.getElementById("choixQuizMoi");
+        conteneur.innerHTML = "";
+
+        question.choix.forEach((choix, index) => {
+
+            const bouton = document.createElement("button");
+
+            bouton.textContent = choix;
+
+            bouton.onclick = () => repondreQuizMoi(index);
+
+            conteneur.appendChild(bouton);
+
+        });
+    }
+
+    function repondreQuizMoi(index) {
+
+        const question = questionsMoi[questionMoiActuelle];
+
+        if (index === question.bonne) {
+            scoreMoi++;
+        }
+
+        questionMoiActuelle++;
+
+        if (questionMoiActuelle >= questionsMoi.length) {
+            terminerQuizMoi();
+        }
+        else {
+            afficherQuestionMoi();
+        }
+    }
+
+    function terminerQuizMoi() {
+
+        document.getElementById("contenuQuizMoi").style.display = "none";
+        document.getElementById("finQuizMoi").style.display = "block";
+
+        let message;
+
+        if (scoreMoi === 10) {
+            message = "🏆 PARFAIT ! Tu me connais vraiment très bien !";
+        }
+        else if (scoreMoi >= 7) {
+            message = "😎 Excellent ! Tu me connais bien !";
+        }
+        else if (scoreMoi >= 5) {
+            message = "👍 Pas mal !";
+        }
+        else {
+            message = "😂 Il va falloir mieux me connaître !";
+        }
+
+        document.getElementById("resultatQuizMoi").textContent =
+            scoreMoi + " / " + questionsMoi.length + " — " + message;
+
+        if (!localStorage.getItem("quizMoiTermine")) {
+
+            scoreTotal += scoreMoi * 10;
+
+            localStorage.setItem("quizMoiTermine", "true");
+
+            sauvegarder();
+            actualiserStats();
+        }
+    }
+
+
+    /* ================================= */
+    /*       RÉINITIALISER LE JEU         */
+    /* ================================= */
+
+    function resetProgression() {
+
+        const confirmation =
+            confirm(
+                "Veux-tu vraiment recommencer toute ta progression ?"
+            );
+
+
+        if (!confirmation) {
+
+            return;
+
+        }
+
+
+        scoreTotal = 0;
+
+        niveauxTotal = 0;
+
+        lettres = [];
+
+        codeTrouve = false;
+
+
+        localStorage.removeItem(
+            "scoreTotal"
+        );
+
+
+        localStorage.removeItem(
+            "niveauxTotal"
+        );
+
+
+        localStorage.removeItem(
+            "lettres"
+        );
+
+
+        localStorage.removeItem(
+            "codeTrouve"
+        );
+
+
+        localStorage.setItem(
+            "codeSecretActuel",
+            codeSecret
+        );
+
+
+        actualiserStats();
+
+
+        afficherCode();
+
+
+        alert(
+            "🔄 Progression réinitialisée !"
+        );
+
+    }
+
+
+
+    /* ================================= */
+    /*             DÉMARRAGE              */
+    /* ================================= */
+
+    actualiserStats();
+
+    afficherLettres();
+
+</script>
